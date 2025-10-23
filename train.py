@@ -9,34 +9,16 @@ from alive_progress import alive_bar
 from networks.vit_seg_modeling import VisionTransformer as ViT_seg
 from networks.vit_seg_modeling import CONFIGS as CONFIGS_ViT_seg
 from torch.utils.data import DataLoader
-from albumentations.augmentations import transforms
 from albumentations.core.composition import Compose
 from albumentations import RandomRotate90, Resize, Flip
-from transformers import SegformerImageProcessor
 from src.dataloader.dataset import MedicalDataSets
-# from src.network.New.DGAUNet_one_encoder import DGAUNet_one_encoder
-from src.network.conv_based.AttU_Net import AttU_Net
-from src.network.conv_based.CGNet import Context_Guided_Network
-from src.network.conv_based.CMUNeXt import cmunext
-from src.network.conv_based.CMUNet import CMUNet
-from src.network.conv_based.ELUnet import ELUnet
-from src.network.conv_based.ULite import ULite
-from src.network.conv_based.UNeXt import UNext
-from src.network.conv_based.UNet3plus import UNet3plus
-from src.network.conv_based.UNetplus import ResNet34UnetPlus
-from src.network.conv_based.U_Net import U_Net
-from src.network.conv_based.cfpnet import CFPNet
-from src.network.conv_based.pp_liteseg import PPLiteSeg
-from src.network.transfomer_based.transformer_based_network import get_transformer_based_model
 from src.utils import losses
 from src.utils.metrics import iou_score
 from src.utils.util import AverageMeter
 from model import DualEncoderUNet
-from transformers import SegformerForSemanticSegmentation, SegformerImageProcessor, SegformerConfig
+from transformers import SegformerForSemanticSegmentation, SegformerConfig
 import segmentation_models_pytorch as smp
 import torch.nn.functional as F
-from model_TransSegUnet import DualEncoderUNet as DualEncoderTranUNet
-from utils.utils import adapt_checkpoint_dualEncoder
 def adapt_checkpoint(checkpoint, model):
     model_dict = model.state_dict()
     new_checkpoint = {}
@@ -84,48 +66,8 @@ seed_torch(args.seed)
 
 
 def get_model(args):
-    if args.model == "CMUNet":
-        model = CMUNet(output_ch=args.num_classes).cuda()
-    elif args.model == "CMUNeXt":
-        model = cmunext(num_classes=args.num_classes).cuda()
-        # model.load_state_dict(torch.load('checkpoint/CMUNeXt_model.pth'))
-    elif args.model == "U_Net":
-        model = U_Net(output_ch=args.num_classes).cuda()
-    elif args.model == "AttU_Net":
-        model = AttU_Net(output_ch=args.num_classes).cuda()
-    elif args.model == "UNext":
-        model = UNext(output_ch=args.num_classes).cuda()
-    elif args.model == ("UNetplus"):
-        model = ResNet34UnetPlus(num_class=args.num_classes).cuda()
-    elif args.model == "UNet3plus":
-        model = UNet3plus(n_classes=args.num_classes).cuda()
-    elif args.model == "DGAUNet_one_encoder":
-        model = DGAUNet_one_encoder(output_ch=args.num_classes).cuda()
-    elif args.model == "ELUnet":
-        model = ELUnet().cuda()
-    elif args.model == "ULite":
-        model = ULite().cuda()
-    elif args.model == "CGNet":
-        model = Context_Guided_Network().cuda()
-    elif args.model == "PPLiteSeg":
-        model = PPLiteSeg().cuda()
-    elif args.model == "CFPNet":
-        model = CFPNet().cuda()
-    elif args.model == "ours" or args.model == "ours_weit" or args.model == "ours_n" or args.model == "ours_s":
-        # variant = int(args.variant)
-        if args.model == "ours_s":
-            variant = 0
-            cof_unet = 0
-            cof_seg = 1
-        elif args.model == "ours_n":
-            variant = 0
-            cof_unet = 1
-            cof_seg = 0
-        else:
-            variant = int(args.variant)
-            cof_unet = 1
-            cof_seg = 1
-
+    if args.model == "ours":
+        variant = int(args.variant)
         fine_tune = False
         # decoder_channels = (512, 256, 128, 64,32)
         IgnoreBottleNeck = False
@@ -140,46 +82,11 @@ def get_model(args):
             in_channels=3,
             unet_encoder_weights="imagenet",
             unet_encoder_name="resnet34",
-            # decoder_type="unet++",
             IgnoreBottleNeck=IgnoreBottleNeck,
-            # model_depth=model_depth,
             decoder_channels=(256, 128, 64, 32, 16),
-            # model_depth = 4,
-            cof_unet=cof_unet,
-            cof_seg=cof_seg,
+            model_depth = 5,
         ).cuda()
 
-        if args.model == 'ours_s':
-            for seg_temp in model.segformer.parameters():
-                seg_temp.requires_grad = True
-            for unet_temp in model.unet_encoder.parameters():
-                unet_temp.requires_grad = False
-
-        if args.model == 'ours_n':
-            for seg_temp in model.segformer.parameters():
-                seg_temp.requires_grad = False
-            for unet_temp in model.unet_encoder.parameters():
-                unet_temp.requires_grad = True
-
-
-
-        cp = adapt_checkpoint_dualEncoder(model, args.folds, dg = True)
-        model.load_state_dict(cp, strict=False)  # strict=True to ensure all trained layers match
-
-        for seg_temp in model.segformer.parameters():
-            seg_temp.requires_grad = False
-
-        for unet_temp in model.unet_encoder.parameters():
-            unet_temp.requires_grad = False
-
-        if fine_tune:
-            fineTune_PATH = '/home/ntorbati/PycharmProjects/SegformerPlusUnet/TissueExpb2_v0_preTrainsegformerUnet1segformerUnet0/checkpoint_epoch1.pth'
-            cp = torch.load(fineTune_PATH, weights_only=True)
-            if "module." in list(cp.keys())[0]:
-                cp = {k.replace("module.", ""): v for k, v in cp.items()}
-
-            cp = adapt_checkpoint(cp, model)
-            model.load_state_dict(cp, strict=False)  # strict=True to ensure all trained layers match
     elif args.model == "segformer":
         segformer_variant = "nvidia/segformer-b2-finetuned-ade-512-512"
         config = SegformerConfig.from_pretrained(segformer_variant)
@@ -191,40 +98,6 @@ def get_model(args):
 
         # Initialize the model (without pretrained weights)
         model = SegformerForSemanticSegmentation(config).cuda()
-    elif args.model == "oursTrans":
-        variant = 7
-        fine_tune = False
-        # decoder_channels = (512, 256, 128, 64,32)
-        IgnoreBottleNeck = False
-        segformer_variant = "nvidia/segformer-b2-finetuned-ade-512-512"
-        print('T4444')
-        model = DualEncoderTranUNet(wa_outs=[32, 64, 128, 256],
-                                 wb_outs=[32, 64, 128, 256],
-                                 m=256,
-                                 segformer_variant=segformer_variant,
-                                 simple_fusion=variant,
-                                 regression=False,
-                                 classes=args.num_classes,
-                                 in_channels=3,
-                                 # unet_encoder_weights="imagenet",
-                                 # unet_encoder_name="resnet34",
-                                 # decoder_type="unet++",
-                                 IgnoreBottleNeck=IgnoreBottleNeck,
-                                 # model_depth=model_depth,
-                                 input_size=args.img_size,
-                                 decoder_channels=(512, 256, 128, 64),
-                                 ).cuda()
-        if fine_tune:
-            fineTune_PATH = '/home/ntorbati/PycharmProjects/DualNet_New/Pumaours_weit70/checkpoint_epoch1.pth'
-            cp = torch.load(fineTune_PATH, weights_only=True)
-            if "module." in list(cp.keys())[0]:
-                cp = {k.replace("module.", ""): v for k, v in cp.items()}
-
-            cp = adapt_checkpoint(cp, model)
-            model.load_state_dict(cp, strict=False)  # strict=True to ensure all trained layers match
-
-
-
     elif args.model == "ResnetUnet":
         model = smp.Unet(classes=args.num_classes, in_channels=3).cuda()
 
@@ -234,38 +107,23 @@ def get_model(args):
         config_vit.n_skip = 3
         config_vit.patches.grid = (int(256 / 16), int(256 / 16))
         model = ViT_seg(config_vit, img_size=args.img_size, num_classes=config_vit.n_classes).cuda()
-
-        # import torch
-        # from ptflops import get_model_complexity_info
-        # with torch.cuda.device(0):
-        #     macs, params = get_model_complexity_info(net, (1, 256, 256), as_strings=True,
-        #                                              print_per_layer_stat=True, verbose=True)
-        #     print('{:<30}  {:<8}'.format('Computational complexity: ', macs))
-        #     print('{:<30}  {:<8}'.format('Number of parameters: ', params))
-
         model.load_from(weights=np.load(config_vit.pretrained_path))
     else:
-        model = get_transformer_based_model(parser=parser, model_name=args.model, img_size=args.img_size,
-                                            num_classes=args.num_classes, in_ch=3).cuda()
+        print('model error')
+        return None
     return model
-    # return model
 
 
 def getDataloader(args):
     img_size = args.img_size
-    if args.model == "SwinUnet":
-        img_size = 224
     train_transform = Compose([
         RandomRotate90(),
-        # transforms.Flip(),
         Flip(),
         Resize(img_size, img_size),
-        # transforms.Normalize(),
     ])
 
     val_transform = Compose([
         Resize(img_size, img_size),
-        # transforms.Normalize(),
     ])
     db_train = MedicalDataSets(base_dir=args.base_dir, split="train",
                                transform=train_transform, train_file_dir=args.train_file_dir,
@@ -282,11 +140,10 @@ def getDataloader(args):
 
 def main(args):
     os.makedirs(os.path.join("./train_result", 'total'), exist_ok=True)
-    for folds in [0,1]:
+    for folds in [0,1,2]:
         args.folds = folds
         args.train_file_dir = 'GCPS{}_train.txt'.format(folds)
         args.val_file_dir = 'GCPS{}_val.txt'.format(folds)
-        # train_result = open(os.path.join("./train_result", 'total', '{}_train_resultFinal_v9.txt'.format(args.model)), 'w')
         train_result = open(os.path.join("./train_result", 'total', '{}_train_result_v1{}.txt'.format(args.model,folds)), 'w')
         base_lr = args.base_lr
         trainloader, valloader = getDataloader(args)
@@ -295,14 +152,9 @@ def main(args):
         optimizer = optim.SGD(model.parameters(), lr=base_lr, momentum=0.9, weight_decay=0.0001)
         criterion = losses.__dict__['BCEDiceLoss']().cuda()
         print("{} iterations per epoch".format(len(trainloader)))
-
         best_iou = 0
         iter_num = 0
         max_epoch = args.epoch
-        segformer_variant = "nvidia/segformer-b2-finetuned-ade-512-512"
-        processor = SegformerImageProcessor.from_pretrained(
-            segformer_variant, do_resize=False, do_rescale=False)
-        max_iterations = len(trainloader) * max_epoch
         total_avg_meters = {'loss': AverageMeter(),
                             'iou': AverageMeter(),
                             'val_loss': AverageMeter(),
@@ -337,19 +189,6 @@ def main(args):
 
 
                     if args.model == "segformer":
-                        # batch_numpy = [img.permute(1, 2, 0).cpu().numpy() for img in
-                        #                img_batch[:, 0:3]]  # (H, W, C) format
-                        # # Process input images
-                        # images1 = processor(images=batch_numpy,
-                        #                     return_tensors="pt")  # Now it's ready for SegFormer
-                        # images1 = {key: value.to(img_batch.device) for key, value in images1.items()}
-                        # if img_batch.shape[1] > 3:
-                        #     images1['pixel_values'] = torch.concatenate(
-                        #         (images1['pixel_values'], img_batch[:, 3].unsqueeze(1)), dim=1)
-                        # masks_pred = model(**images1)
-                        # outputs = F.interpolate(masks_pred.logits, size=label_batch.size()[2:],
-                        #                            mode='bilinear', align_corners=False)
-
                         outputs = model(img_batch)
                         outputs = F.interpolate(outputs.logits, size=label_batch.size()[2:],
                                                    mode='bilinear', align_corners=False)
@@ -363,10 +202,6 @@ def main(args):
                     loss.backward()
                     optimizer.step()
 
-                    # lr_ = base_lr * (1.0 - iter_num / max_iterations) ** 0.9
-                    # for param_group in optimizer.param_groups:
-                    #     param_group['lr'] = lr_
-
                     iter_num = iter_num + 1
                     avg_meters['loss'].update(loss.item(), img_batch.size(0))
                     avg_meters['iou'].update(iou, img_batch.size(0))
@@ -378,19 +213,6 @@ def main(args):
                         img_batch, label_batch = sampled_batch['image'], sampled_batch['label']
                         img_batch, label_batch = img_batch.cuda(), label_batch.cuda()
                         if args.model == "segformer":
-                            # batch_numpy = [img.permute(1, 2, 0).cpu().numpy() for img in
-                            #                img_batch[:, 0:3]]  # (H, W, C) format
-                            # # Process input images
-                            # images1 = processor(images=batch_numpy,
-                            #                     return_tensors="pt")  # Now it's ready for SegFormer
-                            # images1 = {key: value.to(img_batch.device) for key, value in images1.items()}
-                            # if img_batch.shape[1] > 3:
-                            #     images1['pixel_values'] = torch.concatenate(
-                            #         (images1['pixel_values'], img_batch[:, 3].unsqueeze(1)), dim=1)
-                            # masks_pred = model(**images1)
-                            # outputs = F.interpolate(masks_pred.logits, size=label_batch.size()[2:],
-                            #                            mode='bilinear', align_corners=False)
-
                             output = model(img_batch)
                             output = F.interpolate(output.logits, size=label_batch.size()[2:],
                                                     mode='bilinear', align_corners=False)
@@ -461,7 +283,7 @@ def main(args):
 
 
 if __name__ == "__main__":
-    for models in ["ours"]:# ["ours", "ResnetUnet"]:#,"TransUnet", "segformer"]:#,"ours", "ResnetUnet"]:
+    for models in ["ours", "ResnetUnet","TransUnet", "segformer"]:
         print(models)
         args.model = models
         main(args)

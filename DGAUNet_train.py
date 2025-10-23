@@ -61,12 +61,11 @@ seed_torch(args.seed)
 
 
 def get_model(args):
-    if args.model == "NewU_Net_skip1":
-        model = NewU_Net_skip1(output_ch=args.num_classes).cuda()
-    elif args.model == "DGAUNet":
+    if args.model == "DGAUNet":
         model = DGAUNet(output_ch=args.num_classes).cuda()
-    elif args.model == "DGAUNet_one_encoder":
-        model = DGAUNet_one_encoder(output_ch=args.num_classes).cuda()
+    else:
+        print('model error')
+        return None
     return model
 
 
@@ -76,15 +75,12 @@ def getDataloader(args):
         img_size = 224
     train_transform = Compose([
         RandomRotate90(),
-        # transforms.Flip(),
         Flip(),
         Resize(img_size, img_size),
-        # transforms.Normalize(),
     ])
 
     val_transform = Compose([
         Resize(img_size, img_size),
-        # transforms.Normalize(),
     ])
     db_train = MedicalDataSets(base_dir=args.base_dir, split="train",
                                transform=train_transform, train_file_dir=args.train_file_dir,
@@ -100,24 +96,18 @@ def getDataloader(args):
 
 
 def main(args):
-    for folds in [0,1]:
+    for folds in [0,1,2]:
         args.train_file_dir = 'GCPS{}_train.txt'.format(folds)
         args.val_file_dir = 'GCPS{}_val.txt'.format(folds)
-        # train_result = open(os.path.join("./train_result", 'total', '{}_train_resultFinal_v9.txt'.format(args.model)), 'w')
         train_result = open(os.path.join("./train_result", 'total', '{}_train_result{}.txt'.format(args.model,folds)), 'w')
-
-    # train_result = open(os.path.join("./train_result",'total', '{}_train_resultFinal.txt'.format(args.model)), 'w')
-
         base_lr = args.base_lr
         trainloader, valloader = getDataloader(args)
         model = get_model(args)
         print("train file dir:{} val file dir:{}".format(args.train_file_dir, args.val_file_dir))
         optimizer_seg = optim.SGD(model.get_parameters(net="seg_net"), lr=base_lr, momentum=0.9, weight_decay=0.0001)
         optimizer_l = optim.SGD(model.get_parameters(net="l"), lr=base_lr, momentum=0.9, weight_decay=0.0001)
-        # optimizer_l = torch.optim.Adam(model.get_parameters(net="l"),lr=0.01, betas=(0.5, 0.999))
         criterion = losses.__dict__['BCEDiceLoss']().cuda()
         criterion1 = MSELoss().cuda()
-        criterion2 = DistillKL(T=1).cuda()
         print("{} iterations per epoch".format(len(trainloader)))
 
         best_iou = 0
@@ -156,35 +146,6 @@ def main(args):
                 for i_batch, sampled_batch in enumerate(trainloader):
                     img_batch, label_batch = sampled_batch['image'], sampled_batch['label']
                     img_batch, label_batch = img_batch.cuda(), label_batch.cuda()
-
-                    # output, s_e_out,s_skip, t_e_out, t_skip = model(img_batch, img_batch + label_batch)
-                    # output, s_e_out, t_e_out, t_skip ,s_skip= model(img_batch, img_batch + label_batch)
-                    #
-                    # # skip_loss1=criterion1(s_skip[0],t_skip[0].detach())
-                    # # skip_loss2=criterion1(s_skip[1],t_skip[1].detach())
-                    # # skip_loss3=criterion1(s_skip[2],t_skip[2].detach())
-                    # # skip_loss4=criterion1(s_skip[3],t_skip[3].detach())
-                    # # all_skiploss=(skip_loss1+skip_loss2+skip_loss3+skip_loss4)/4
-                    # #
-                    # # e_studyloss=0.6*criterion1(s_e_out,t_e_out.detach())+0.4*all_skiploss
-                    # e_studyloss=criterion1(s_e_out,t_e_out.detach())
-                    #
-                    # s_seg_loss=criterion(output, label_batch)
-                    #
-                    # iou, dice, _, _, _, _, _ = iou_score(output, label_batch)
-                    # x_seg_loss = 0.85 * s_seg_loss + 0.15  * e_studyloss
-                    # optimizer_seg.zero_grad()
-                    # x_seg_loss.backward()
-                    # optimizer_seg.step()
-                    #
-                    # pre_x_with_label = model.pre_x_with_label(t_e_out, t_skip)
-                    # loss_label = criterion(pre_x_with_label, label_batch)
-                    # l_iou, _, _, _, _, _, _ = iou_score(pre_x_with_label, label_batch)
-                    #
-                    # optimizer_l.zero_grad()
-                    # loss_label.backward()
-                    # optimizer_l.step()
-
 
                     r_out,r_e_out=model.get_R_out(img_batch+label_batch)
                     loss_label=criterion(r_out,label_batch)

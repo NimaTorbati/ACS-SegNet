@@ -10,7 +10,8 @@ Two Parallel Encoders in a U-Net–Shaped Network:
 <img width="4240" height="1268" alt="image" src="https://github.com/user-attachments/assets/906d5d9d-7013-437c-b426-06bc9b2aa87c" />
 
 ## Results
-<img width="813" height="396" alt="image" src="https://github.com/user-attachments/assets/9e3d8762-9ad5-4711-aead-6026ef0451ed" />
+<img width="724" height="725" alt="image" src="https://github.com/user-attachments/assets/b04b551d-2756-4a87-81ff-a053beaaedd6" />
+
 
 
 <img width="2504" height="3748" alt="image" src="https://github.com/user-attachments/assets/5e3beb8d-590a-4e3e-9fac-1b1297caddd5" />

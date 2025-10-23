@@ -14,5 +14,5 @@ Two Parallel Encoders in a U-Net–Shaped Network:
 
 
 ## Example Predictions
-<img width="2504" height="3748" alt="image" src="https://github.com/user-attachments/assets/5e3beb8d-590a-4e3e-9fac-1b1297caddd5" />
+<img width="1000" height="2000" alt="image" src="https://github.com/user-attachments/assets/5e3beb8d-590a-4e3e-9fac-1b1297caddd5" />
 

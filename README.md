@@ -11,10 +11,24 @@ Two Parallel Encoders in a U-Net–Shaped Network:
 
 ## Results
 
+| Method          | μIoU (%)         | μDice (%)        |
+| --------------- | ---------------- | ---------------- |
+| DGAUNet [15]    | 75.95 ± 0.20     | 86.33 ± 0.13     |
+| SegFormer [13]  | 70.90 ± 0.38     | 82.97 ± 0.26     |
+| ResNetUNet [17] | 75.65 ± 0.08     | 86.13 ± 0.05     |
+| TransUNet [6]   | 74.84 ± 0.10     | 85.61 ± 0.09     |
+| CS-SegNet       | 76.68 ± 0.15     | 86.80 ± 0.06     |
+| **ACS-SegNet**  | **76.79 ± 0.14** | **86.87 ± 0.09** |
 
-<p align="center">
-  <img width="567" height="728" alt="image" src="https://github.com/user-attachments/assets/e71293f4-0349-40c8-9bdb-ad02c7f1c63e" />
-</p>
+| Method          | μIoU (%)         | μDice (%)        |
+| --------------- | ---------------- | ---------------- |
+| DGAUNet [15]    | 44.35 ± 1.76     | 53.69 ± 1.91     |
+| SegFormer [13]  | 46.78 ± 2.58     | 58.25 ± 2.01     |
+| ResNetUNet [17] | 58.42 ± 1.98     | 71.58 ± 1.21     |
+| TransUNet [6]   | 62.43 ± 2.47     | 74.63 ± 1.91     |
+| CS-SegNet       | 63.67 ± 1.23     | 75.55 ± 1.71     |
+| **ACS-SegNet**  | **64.93 ± 2.28** | **76.60 ± 1.36** |
+
 
 ## Example Predictions
 <p align="center">

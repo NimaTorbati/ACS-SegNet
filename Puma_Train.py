@@ -30,8 +30,8 @@ def seed_torch(seed):
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--model', type=str, default="ours",
-                    choices=["TransUnet", "ours", "segformer", "ResnetUnet", "DGAUNet"], help='model')
+parser.add_argument('--model', type=str, default="ACSSegNet",
+                    choices=["TransUnet", "ACSSegNet", "segformer", "ResnetUnet", "DGAUNet"], help='model')
 parser.add_argument('--batch_size', type=int, default=5, help='batch_size per gpu')
 parser.add_argument('--img_size', type=int, default=512, help='img size of per batch')
 parser.add_argument('--num_classes', type=int, default=5, help='seg num_classes')
@@ -45,7 +45,7 @@ seed_torch(args.seed)
 def get_model(args):
     if args.model == "DGAUNet":
         model = DGAUNet(output_ch=args.num_classes, img_size=512).cuda()
-    elif args.model == "ours":
+    elif args.model == "ACSSegNet":
         variant = int(args.variant)
         IgnoreBottleNeck = False
         segformer_variant = "nvidia/segformer-b2-finetuned-ade-512-512"
@@ -139,7 +139,7 @@ def main(args):
 
 
     for folds in range(0,n_folds):
-        print(f'{args.model} training fold : {folds}')
+        print(f'{args.model} training fold : {folds} ......................................................')
         ## exxclude necrosis samples from data
         train_index_primary = indices_primary[splits_primary[folds][0]]
         for indd in inds_p:
@@ -171,14 +171,14 @@ def main(args):
         train_masks = np.concatenate((mask_data_metas[train_index_metas], mask_data_primary[train_index_primary]), axis=0)##
 
         ## Micro Dice Initialization
-        dir_checkpoint = Path('/home/ntorbati/PycharmProjects/ACS-SegNet/Puma' + model_name + str(folds) + str(args.iter) + str(args.variant) +  '/')
+        dir_checkpoint = Path('/home/ntorbati/PycharmProjects/ACS-SegNet/ModelWeights/Puma' + model_name + str(folds) + str(args.iter) + str(args.variant) +  '/')
 
 
 
         class_weights = [1, 1, 1, 1, 1]
         class_weights = torch.tensor(class_weights, device=device2,dtype=torch.float16)
 
-        iters = [1]
+        iters = [150]
 
         ## higher learning rate for DGAUNet to help it converge faster
         if model_name == 'DGAUNet':
@@ -218,7 +218,7 @@ def main(args):
         )
         del model1
 if __name__ == "__main__":
-    models = ["ours", "ResnetUnet","TransUnet", "segformer"]
+    models = ["ACSSegNet", "ResnetUnet","TransUnet", "segformer", "DGAUNet"]
     for model in models:
         args.model = model
         main(args)

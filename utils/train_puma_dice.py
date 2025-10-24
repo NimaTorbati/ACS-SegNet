@@ -276,7 +276,7 @@ def train_model(
                                 total_val_images += true_masks.size(0)
                             total_dice = (2*TP + eps)/(2*TP+FP+FN + eps)
                             total_iou = (TP + eps)/(TP+FP+FN +eps)
-                            print('new metrics: ', total_dice, total_iou)
+                            # print('new metrics: ', total_dice, total_iou)
                             val_loss /= total_val_images  # Divide by total validation samples
                             val_dice /= total_val_images
                             val_iou /= total_val_images

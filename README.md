@@ -46,7 +46,9 @@ BibTex entry:
 
 
 ` 
+
 @misc{
+
 torbati2025acssegnetattentionbasedcnnsegformersegmentation,
 
       title={ACS-SegNet: An Attention-Based CNN-SegFormer Segmentation Network for Tissue Segmentation in Histopathology}, 
@@ -61,6 +63,5 @@ torbati2025acssegnetattentionbasedcnnsegformersegmentation,
 
       primaryClass={cs.CV},
 
-      url={https://arxiv.org/abs/2510.20754}, 
-}
+      url={https://arxiv.org/abs/2510.20754},}
 `

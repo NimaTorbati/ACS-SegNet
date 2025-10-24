@@ -45,8 +45,7 @@ A preprint version of our paper is publicy available on arXiv: (https://arxiv.or
 BibTex entry:
 
 
-` 
-@misc{torbati2025acssegnetattentionbasedcnnsegformersegmentation,
+` @misc{torbati2025acssegnetattentionbasedcnnsegformersegmentation,
 
       title={ACS-SegNet: An Attention-Based CNN-SegFormer Segmentation Network for Tissue Segmentation in Histopathology}, 
 

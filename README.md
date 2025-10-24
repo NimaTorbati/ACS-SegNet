@@ -1,4 +1,5 @@
 <div align="center"
+  
 # ACS-SegNet: An Attention-Based CNN-SegFormer Segmentation Network for Tissue Segmentation in Histopathology
 This repository contains the implementation details of "ACS-SEGNET: AN ATTENTION-BASED CNN-SEGFORMER SEGMENTATION NETWORK FOR TISSUE SEGMENTATION IN HISTOPATHOLOGY".
 

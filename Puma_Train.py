@@ -218,7 +218,7 @@ def main(args):
         )
         del model1
 if __name__ == "__main__":
-    models = ["ACSSegNet", "ResnetUnet","TransUnet", "segformer", "DGAUNet"]
+    models = ["ACSSegNet"]# ["ACSSegNet", "ResnetUnet","TransUnet", "segformer", "DGAUNet"]
     for model in models:
         args.model = model
         main(args)

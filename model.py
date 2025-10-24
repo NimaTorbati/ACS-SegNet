@@ -1,6 +1,6 @@
 from transformers import SegformerModel, SegformerConfig
 import segmentation_models_pytorch as smp
-from segmentation_models_pytorch.decoders.unet.decoder import UnetDecoder
+from unet_decoder.decoder import UnetDecoder
 import matplotlib.pyplot as plt
 from segmentation_models_pytorch.decoders.unetplusplus.decoder import UnetPlusPlusDecoder
 

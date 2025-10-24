@@ -4,12 +4,13 @@ This repository contains the implementation details of "ACS-SEGNET: AN ATTENTION
 
 **Acknowledgment**: This project has been conducted through a joint WWTF-funded project (Grant ID: 10.47379/LS23006) between the Medical University of Vienna and Danube Private University. 
 
+## Model
 <div align="center"
 
-## Model
 Two Parallel Encoders in a U-Net–Shaped Network:
 
 <img width="4240" height="1268" alt="image" src="https://github.com/user-attachments/assets/906d5d9d-7013-437c-b426-06bc9b2aa87c" />
+</p>
 
 ## Results
 Table 1. Segmentation results on the GCPS dataset

@@ -47,9 +47,8 @@ def seed_torch(seed):
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--model', type=str, default="ours",
-                    choices=["CMUNeXt", "CMUNet", "AttU_Net", "TransUnet", "R2U_Net", "U_Net","DGAUNet_one_encoder","ELUnet","CGNet","CFPNet","PPLiteSeg", "ULite",
-                             "UNext", "UNetplus", "UNet3plus", "SwinUnet", "MedT", "TransUnet", "ours","ours_s","ours_n", "segformer", "ResnetUnet", "oursTrans"], help='model')
+parser.add_argument('--model', type=str, default="ACSSegNet",
+                    choices=["TransUnet", "ACSSegNet", "segformer", "ResnetUnet"], help='model')
 parser.add_argument('--base_dir', type=str, default="./data", help='dir')
 parser.add_argument('--train_file_dir', type=str, default="GCPS_train.txt", help='dir')
 parser.add_argument('--val_file_dir', type=str, default="GCPS_val.txt", help='dir')
@@ -59,22 +58,20 @@ parser.add_argument('--epoch', type=int, default=150, help='train epoch')
 parser.add_argument('--img_size', type=int, default=256, help='img size of per batch')
 parser.add_argument('--num_classes', type=int, default=1, help='seg num_classes')
 parser.add_argument('--seed', type=int, default=42, help='random seed')
-parser.add_argument('--variant', type=str, default='11', help='random seed')
+parser.add_argument('--variant', type=str, default='1', help='random seed')
 parser.add_argument('--folds', type=int, default=None)
 args = parser.parse_args()
 seed_torch(args.seed)
 
 
 def get_model(args):
-    if args.model == "ours":
+    if args.model == "ACSSegNet":
         variant = int(args.variant)
         fine_tune = False
         # decoder_channels = (512, 256, 128, 64,32)
         IgnoreBottleNeck = False
         segformer_variant = "nvidia/segformer-b2-finetuned-ade-512-512"
-        print('B3333')
         model = DualEncoderUNet(
-            m=256,
             segformer_variant=segformer_variant,
             simple_fusion=variant,
             regression=False,
@@ -283,7 +280,7 @@ def main(args):
 
 
 if __name__ == "__main__":
-    for models in ["ours", "ResnetUnet","TransUnet", "segformer"]:
+    for models in ["ACSSegNet", "ResnetUnet","TransUnet", "segformer"]:
         print(models)
         args.model = models
         main(args)

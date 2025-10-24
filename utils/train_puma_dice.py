@@ -285,24 +285,22 @@ def train_model(
                 epoch_dice /= n_train
                 # print(epoch_dice)
             else:
-                try:
-                    total_dice[total_dice.isnan()] = 0
-                    print(f"{phase.capitalize()} Loss: {epoch_loss if phase == 'train' else val_loss:.4f}")
-                    print(f'uDice:{total_dice.mean().item():.4f}', f'Mdice:{val_dice[1:].mean().item():.4f}',
-                          f'dice: {val_dice}')
-                    th = total_dice.mean()
-                    if th > best_val_score:
-                        best_val_score = th
-                        print( 'Dice:' ,total_dice.mean(),'IoU:' ,total_iou.mean())
-                        if save_checkpoint:
-                            Path(dir_checkpoint).mkdir(parents=True, exist_ok=True)
-                            state_dict = model.state_dict()
-                            # state_dict['mask_values'] = dataset.mask_values
-                            torch.save(state_dict, str(dir_checkpoint / 'checkpoint_epoch{}.pth'.format(1)))
-                            best_model_wts = copy.deepcopy(state_dict)
-
-                except:
-                    print('not validated')
+                total_dice[total_dice.isnan()] = 0
+                print(f"{phase.capitalize()} Loss: {epoch_loss if phase == 'train' else val_loss:.4f}")
+                print(f'uDice:{total_dice.mean().item():.4f}', f'Dice:{val_dice[1:].mean().item():.4f}')
+                print(
+                    f"uDice: {total_dice.mean().item():.4f}, uDice Classes: {[f'{x:.4f}' for x in total_dice.cpu().numpy()]}")
+                th = total_dice.mean()
+                if th > best_val_score:
+                    best_val_score = th
+                    print( 'saving best model')
+                    print( 'Dice:' ,total_dice.mean(),'IoU:' ,total_iou.mean())
+                    if save_checkpoint:
+                        Path(dir_checkpoint).mkdir(parents=True, exist_ok=True)
+                        state_dict = model.state_dict()
+                        # state_dict['mask_values'] = dataset.mask_values
+                        torch.save(state_dict, str(dir_checkpoint / 'checkpoint_epoch{}.pth'.format(1)))
+                        best_model_wts = copy.deepcopy(state_dict)
 
     try:
         model.load_state_dict(best_model_wts)

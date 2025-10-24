@@ -45,9 +45,7 @@ A preprint version of our paper is publicy available on arXiv: (https://arxiv.or
 BibTex entry:
 
 
-` 
-
-@misc{
+` @misc{
 
 torbati2025acssegnetattentionbasedcnnsegformersegmentation,
 

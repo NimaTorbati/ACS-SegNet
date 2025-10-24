@@ -96,7 +96,6 @@ def get_model(args):
 
 def main(args):
     model_name = args.model
-    print(model_name)
 
     final_target_size = (args.img_size,args.img_size)
     n_class = args.num_classes
@@ -140,6 +139,7 @@ def main(args):
 
 
     for folds in range(0,n_folds):
+        print(f'{args.model} training fold : {folds}')
         ## exxclude necrosis samples from data
         train_index_primary = indices_primary[splits_primary[folds][0]]
         for indd in inds_p:
@@ -171,14 +171,14 @@ def main(args):
         train_masks = np.concatenate((mask_data_metas[train_index_metas], mask_data_primary[train_index_primary]), axis=0)##
 
         ## Micro Dice Initialization
-        dir_checkpoint = Path('/home/ntorbati/PycharmProjects/DGAUNet/Puma' + model_name + str(folds) + str(args.iter) + str(args.variant) +  '/')
+        dir_checkpoint = Path('/home/ntorbati/PycharmProjects/ACS-SegNet/Puma' + model_name + str(folds) + str(args.iter) + str(args.variant) +  '/')
 
 
 
         class_weights = [1, 1, 1, 1, 1]
         class_weights = torch.tensor(class_weights, device=device2,dtype=torch.float16)
 
-        iters = [50]
+        iters = [1]
 
         ## higher learning rate for DGAUNet to help it converge faster
         if model_name == 'DGAUNet':
@@ -213,12 +213,12 @@ def main(args):
         ful_size=final_target_size,
         dir_checkpoint=dir_checkpoint,
         model_name=model_name,
-        val_sleep_time = 10,
+        val_sleep_time = -1,
         nuclei=False,
         )
         del model1
 if __name__ == "__main__":
-    models = ["ours"]
+    models = ["ours", "ResnetUnet","TransUnet", "segformer"]
     for model in models:
         args.model = model
         main(args)

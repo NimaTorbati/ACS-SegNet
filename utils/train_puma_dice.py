@@ -7,9 +7,7 @@ from pathlib import Path
 from utils.utils_puma import Mine_resize, puma_f1_loss_custom
 from utils.utils_puma import KorniaAugmentation
 from torch import optim
-from utils.LoadPumaData import load_data_tissue,PumaTissueDataset
-from torchsummary import summary
-import os
+from utils.LoadPumaData import PumaTissueDataset
 from utils.utils_puma import collate_tile_patches
 from torch.cuda.amp import autocast, GradScaler
 import torch.nn.utils

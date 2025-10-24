@@ -26,7 +26,6 @@ import json
 from shapely.geometry import shape
 from rasterio.features import rasterize
 from scipy.spatial import KDTree
-from utils.eval_nuclei import evaluate_files
 import torch
 import torch.nn.functional as F
 from scipy.spatial import KDTree
@@ -2865,45 +2864,6 @@ def erode_connected_components(image):
     return eroded_image
 
 
-def puma_f1(gt_folder,pred_folder,inst_pth,nuclei = 3):
-    images_nuclei = [f for f in os.listdir(pred_folder) if f.endswith('.tif')]
-
-    for image in images_nuclei:
-        im_pth = os.path.join(pred_folder,image)
-        ins_pth = os.path.join(inst_pth,image)
-        ins_pth = ins_pth.replace('.tif','_inst.npy')
-        save_f1_json(im_pth, ins_pth, pred_folder,image,nuclei = nuclei)
-        # if nuclei == 10:
-        #     save_f1_json(im_pth, ins_pth, pred_folder, image, nuclei=nuclei,pred3from10=True)
-
-    results = []
-    results1 = []
-    files = [f for f in os.listdir(pred_folder) if f.endswith('.json') and not f.endswith('_3.json')]
-    counter = 0
-    for file in files:
-        pred_json = os.path.join(pred_folder,file)
-        gt_json = os.path.join(gt_folder,file)
-        if nuclei == 10:
-            gt_json1 = gt_json.replace('.json', '_nuclei.json')
-            gt_json = gt_json1.replace('_nuclei.json', '_nuclei10.json')
-            pred_json1 = pred_json.replace('.json', '_3.json')
-
-
-        else:
-            gt_json = gt_json.replace('.json', '_nuclei.json')
-
-        nuclei_metrics = evaluate_files(gt_json, pred_json)
-        results.append(nuclei_metrics)
-        # if nuclei == 10:
-        #     nuclei_metrics1 = evaluate_files(gt_json1, pred_json1)
-        #     results1.append(nuclei_metrics1)
-
-        counter+=1
-
-    f1_scores_per_class, macro_f1 = report_results_f1(results,counter)
-    # if nuclei == 10:
-    #     _,_ = report_results_f1(results1,counter)
-    return f1_scores_per_class, macro_f1
 
 def report_results_f1(results, counter):
     # Compute average metrics (macro F1-score for nuclei and average DICE for tissue)

@@ -39,6 +39,10 @@ Table 2. Segmentation results on the PUMA dataset
 
 ## Citation
 A preprint version of our paper is publicy available on arXiv: (https://arxiv.org/abs/2510.20754)
+
+
+
+BibTex entry:
 @misc{torbati2025acssegnetattentionbasedcnnsegformersegmentation,
       title={ACS-SegNet: An Attention-Based CNN-SegFormer Segmentation Network for Tissue Segmentation in Histopathology}, 
       author={Nima Torbati and Anastasia Meshcheryakova and Ramona Woitek and Diana Mechtcheriakova and Amirreza Mahbod},

@@ -10,7 +10,7 @@ Two Parallel Encoders in a U-Net–Shaped Network:
 <img width="4240" height="1268" alt="image" src="https://github.com/user-attachments/assets/906d5d9d-7013-437c-b426-06bc9b2aa87c" />
 
 ## Results
-
+Table 1. Segmentation results on the GCPS dataset
 | Method          | μIoU (%)         | μDice (%)        |
 | --------------- | ---------------- | ---------------- |
 | DGAUNet [15]    | 75.95 ± 0.20     | 86.33 ± 0.13     |
@@ -20,6 +20,8 @@ Two Parallel Encoders in a U-Net–Shaped Network:
 | CS-SegNet       | 76.68 ± 0.15     | 86.80 ± 0.06     |
 | **ACS-SegNet**  | **76.79 ± 0.14** | **86.87 ± 0.09** |
 
+
+Table 2. Segmentation results on the PUMA dataset
 | Method          | μIoU (%)         | μDice (%)        |
 | --------------- | ---------------- | ---------------- |
 | DGAUNet [15]    | 44.35 ± 1.76     | 53.69 ± 1.91     |

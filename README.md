@@ -39,6 +39,8 @@ Table 2. Segmentation results on the PUMA dataset
   <img width="500" height="1000" alt="image" src="https://github.com/user-attachments/assets/5e3beb8d-590a-4e3e-9fac-1b1297caddd5" />
 </p>
 
+<div align="left"
+
 ## Citation
 A preprint version of our paper is publicy available on arXiv: (https://arxiv.org/abs/2510.20754)
 

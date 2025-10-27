@@ -44,11 +44,13 @@ A preprint version of our paper is publicy available on arXiv: (https://arxiv.or
 
 <div align="left"
 
+</p>
   
+
+
+
 ## Academic Research License (Non-Commercial)
-
-Copyright (c) 2025 [Your Name or Lab Name]
-
+Copyright (c) 2025 Nima Torbati
 Permission is hereby granted, free of charge, to use this work for
 non-commercial research and educational purposes only, including
 replication of results, internal evaluation, and publication of

@@ -1,16 +1,29 @@
   
 # ACS-SegNet: An Attention-Based CNN-SegFormer Segmentation Network for Tissue Segmentation in Histopathology
-This repository contains the implementation details of "ACS-SEGNET: AN ATTENTION-BASED CNN-SEGFORMER SEGMENTATION NETWORK FOR TISSUE SEGMENTATION IN HISTOPATHOLOGY".
+This repository contains the implementation details of the ACS-SEGNET model.
 
-**Acknowledgment**: This project has been conducted through a joint WWTF-funded project (Grant ID: 10.47379/LS23006) between the Medical University of Vienna and Danube Private University. 
-
-## Model
-<div align="center"
-
-Two Parallel Encoders in a U-Net–Shaped Network:
 
 <img width="4240" height="1268" alt="image" src="https://github.com/user-attachments/assets/906d5d9d-7013-437c-b426-06bc9b2aa87c" />
-</p>
+
+
+## Citation
+
+Our paper preprint is available on arXiv: https://arxiv.org/abs/2510.20754
+
+BibTex entry:
+```
+@article{torbati2025acs,
+  title={ACS-SegNet: An Attention-Based CNN-SegFormer Segmentation Network for Tissue Segmentation in Histopathology},
+  author={Torbati, Nima and Meshcheryakova, Anastasia and Woitek, Ramona and Mechtcheriakova, Diana and Mahbod, Amirreza},
+  journal={arXiv preprint arXiv:2510.20754},
+  year={2025}
+}
+```
+
+
+
+
+
 
 ## Results
 Table 1. Segmentation results on the GCPS dataset
@@ -34,35 +47,19 @@ Table 2. Segmentation results on the PUMA dataset
 | **ACS-SegNet**  | **64.93 ± 2.28** | **76.60 ± 1.36** |
 
 
+
 ## Example Predictions
-<p align="center">
   <img width="500" height="1000" alt="image" src="https://github.com/user-attachments/assets/5e3beb8d-590a-4e3e-9fac-1b1297caddd5" />
-</p>
 
 
-## Citation
-<div align="left"
 
-  A preprint version of our paper is publicy available on arXiv: (https://arxiv.org/abs/2510.20754)
+## Acknowledgements
+This project has been conducted through a joint WWTF-funded project (Grant ID: 10.47379/LS23006) between the Medical University of Vienna and Danube Private University. 
+   
 
-</p>
-  
+**Academic Research Use:**
+This work is provided "as is", without warranty of any kind. 
 
-## Academic Research License (Non-Commercial)
-<div align="left"
 
-  Copyright (c) 2025 Nima Torbati.
 
-  Permission is hereby granted, free of charge, to use this work for
-  non-commercial research and educational purposes only, including
-  replication of results, internal evaluation, and publication of
-  academic research.
-  
-  Commercial use, redistribution, sublicensing, or incorporation of this
-  work or its derivatives into any product or service for which a fee is
-  charged is expressly prohibited without prior written permission from
-  the copyright holders.
-  
-  THE WORK IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
 
-</p>

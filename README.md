@@ -44,7 +44,8 @@ A preprint version of our paper is publicy available on arXiv: (https://arxiv.or
 
 <div align="left"
 
-  ## Academic Research License (Non-Commercial)
+  
+## Academic Research License (Non-Commercial)
 
 Copyright (c) 2025 [Your Name or Lab Name]
 

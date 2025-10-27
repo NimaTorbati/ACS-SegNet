@@ -140,7 +140,7 @@ def main(args):
 
     for folds in range(0,n_folds):
         print(f'{args.model} training fold : {folds} ......................................................')
-        ## exxclude necrosis samples from data
+        ## exclude necrosis samples from data
         train_index_primary = indices_primary[splits_primary[folds][0]]
         for indd in inds_p:
             train_index_primary = np.delete(train_index_primary,np.where(train_index_primary == indd))

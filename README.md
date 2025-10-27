@@ -42,7 +42,9 @@ Table 2. Segmentation results on the PUMA dataset
 ## Citation
 A preprint version of our paper is publicy available on arXiv: (https://arxiv.org/abs/2510.20754)
 
-Academic Research License (Non-Commercial)
+<div align="left"
+
+  ## Academic Research License (Non-Commercial)
 
 Copyright (c) 2025 [Your Name or Lab Name]
 

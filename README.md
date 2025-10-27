@@ -46,30 +46,22 @@ Table 2. Segmentation results on the PUMA dataset
   A preprint version of our paper is publicy available on arXiv: (https://arxiv.org/abs/2510.20754)
 
 </p>
-
-
-
-
-
-
-<div align="left"
-
-</p>
   
 
-
-
 ## Academic Research License (Non-Commercial)
-Copyright (c) 2025 Nima Torbati
-Permission is hereby granted, free of charge, to use this work for
-non-commercial research and educational purposes only, including
-replication of results, internal evaluation, and publication of
-academic research.
+<div align="left"
 
-Commercial use, redistribution, sublicensing, or incorporation of this
-work or its derivatives into any product or service for which a fee is
-charged is expressly prohibited without prior written permission from
-the copyright holders.
+  Copyright (c) 2025 Nima Torbati
+  Permission is hereby granted, free of charge, to use this work for
+  non-commercial research and educational purposes only, including
+  replication of results, internal evaluation, and publication of
+  academic research.
+  
+  Commercial use, redistribution, sublicensing, or incorporation of this
+  work or its derivatives into any product or service for which a fee is
+  charged is expressly prohibited without prior written permission from
+  the copyright holders.
+  
+  THE WORK IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
 
-THE WORK IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
-
+</p>

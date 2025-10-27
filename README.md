@@ -51,7 +51,8 @@ Table 2. Segmentation results on the PUMA dataset
 ## Academic Research License (Non-Commercial)
 <div align="left"
 
-  Copyright (c) 2025 Nima Torbati
+  Copyright (c) 2025 Nima Torbati.
+
   Permission is hereby granted, free of charge, to use this work for
   non-commercial research and educational purposes only, including
   replication of results, internal evaluation, and publication of

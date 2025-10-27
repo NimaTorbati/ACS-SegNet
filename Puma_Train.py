@@ -36,7 +36,7 @@ parser.add_argument('--batch_size', type=int, default=5, help='batch_size per gp
 parser.add_argument('--img_size', type=int, default=512, help='img size of per batch')
 parser.add_argument('--num_classes', type=int, default=5, help='seg num_classes')
 parser.add_argument('--seed', type=int, default=42, help='random seed')
-parser.add_argument('--variant', type=str, default='1', help='random seed')
+parser.add_argument('--variant', type=str, default='1', help='fusion variant')
 parser.add_argument('--iter', type=int, default=0, help='random seed')
 args = parser.parse_args()
 seed_torch(args.seed)

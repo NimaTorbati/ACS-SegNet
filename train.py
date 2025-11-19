@@ -199,6 +199,10 @@ def main(args):
                     loss.backward()
                     optimizer.step()
 
+                    lr_ = base_lr * (1.0 - iter_num / max_iterations) ** 0.9
+                    for param_group in optimizer.param_groups:
+                        param_group['lr'] = lr_
+
                     iter_num = iter_num + 1
                     avg_meters['loss'].update(loss.item(), img_batch.size(0))
                     avg_meters['iou'].update(iou, img_batch.size(0))
